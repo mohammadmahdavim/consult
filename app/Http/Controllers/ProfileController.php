@@ -29,7 +29,7 @@ class ProfileController extends Controller
     }
     public function index()
     {
-
+// d
         $userId = auth()->user()->id;
         $user = consult::where('user_id', $userId)->with('user')->first();
         $fields = field::all();
