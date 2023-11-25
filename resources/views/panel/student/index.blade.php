@@ -1,5 +1,8 @@
 @extends('layouts.panel')
 @section('css')
+    <!-- begin::datepicker -->
+
+    <!-- end::datepicker -->
     <link rel="stylesheet" href="/panel/assets/vendors/select2/css/select2.min.css" type="text/css">
     <style>
 
@@ -86,6 +89,7 @@
                 <div class="card-body">
                     <div class="card-title">
                         <h5>لیست دانش آموزان</h5>
+
                         <div class="heading-elements">
                             @can('student-create')
                                 <div class="d-flex flex-row">
@@ -137,8 +141,45 @@
                                                             </option>
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="d-flex flex-row">
+
+                                                <div class="p-2">
+                                                        <span>انتخاب مشاور</span>
+                                                        <select class="js-example-basic-single" dir="rtl" multiple
+                                                                name="counsult[]">
+                                                            @foreach($consults as $consult)
+                                                                <option
+                                                                    @if(isset(request()->counsult) && is_array(request()->counsult) && in_array($consult->id, request()->counsult)) selected @endif
+                                                                    value="{{$consult->id}}">
+                                                                    {{$consult->user->name}}
+                                                                    {{$consult->user->family}}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                     <div class="p-2">
-                                                        <span>پایه</span>
+                                                        <span> انتخاب سرمشاور</span>
+                                                        <select class="js-example-basic-single" dir="rtl" multiple
+                                                                name="super_consult_id[]">
+                                                            @foreach($callers as $caller)
+                                                                <option @if(isset(request()->super_consult_id) && is_array(request()->super_consult_id) && in_array($caller->id, request()->super_consult_id)) selected @endif
+                                                                    value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <span> انتخاب مدیر</span>
+                                                        <select class="js-example-basic-single" dir="rtl" multiple
+                                                                name="manager_id[]">
+                                                            @foreach($managers as $caller)
+                                                                <option @if(isset(request()->manager_id) && is_array(request()->manager_id) && in_array($caller->id, request()->manager_id)) selected @endif
+                                                                value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <span> انتخاب پایه</span>
                                                         <select class="js-example-basic-single" dir="rtl" multiple
                                                                 name="paye[]">
                                                             @foreach($payes as $paye)
@@ -158,12 +199,12 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="p-2">
-                                                        <br>
-                                                        <input class="btn btn-danger" type="reset"
-                                                               value="حذف فیلتر ها">
+{{--                                                    <div class="p-2">--}}
+{{--                                                        <br>--}}
+{{--                                                        <input class="btn btn-danger" type="reset"--}}
+{{--                                                               value="حذف فیلتر ها">--}}
 
-                                                    </div>
+{{--                                                    </div>--}}
                                                     <div class="p-2">
                                                         <br>
                                                         <button type="submit" class="btn btn-info">جستجوکن</button>
@@ -209,6 +250,8 @@
                             <tr style="text-align: center">
                                 <th>#</th>
                                 <th>تصویر</th>
+                                <th>مدیر</th>
+                                <th>سر مشاور</th>
                                 <th>مشاور</th>
                                 <th>نام</th>
                                 <th>کد ملی</th>
@@ -247,6 +290,9 @@
                                             @endif
                                         </figure>
                                     </td>
+                                    <td>{{$row->manager->name}} - {{$row->manager->family}}</td>
+                                    <td>{{$row->super_consult->name}} - {{$row->super_consult->family}}</td>
+
                                     <td style="color: #0d8d2d">
                                         @if($row->serviceActive->consult!='[]')
 
@@ -327,6 +373,12 @@
                                                     <i class="fa fa-file-text-o"></i>
                                                 </button>
                                             @endcan
+                                            @can('service-show-student')
+                                                <button type="button" class="btn btn-warning btn-sm" title="یادآور"
+                                                        onclick="modal_show('{{$row->id}}','/panel/reminders');">
+                                                    <i class="fa fa-bell"></i>
+                                                </button>
+                                            @endcan
                                             @can('student-delete')
                                                 <a href="/panel/student/cancel/{{$row->id}}">
                                                     <button class="btn btn-dark btn-sm" title="کنسل">
@@ -338,7 +390,46 @@
 
                                                 <x-destroy :id="$row->id" url="'/panel/student/destroy'"/>
                                             @endcan
+  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#forward{{$row->id}}">
+                                                <i class="fa fa-forward"></i>
+                                            </button>
 
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="forward{{$row->id}}" tabindex="-1" role="dialog"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                                انتقال به سال جدید
+                                                                <br>
+                                                                {{$row->user->name}} {{$row->user->family}}
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="/panel/students/forward" method="post" enctype="multipart/form-data">
+                                                                @csrf
+                                                                <input hidden name="student" value="{{$row->id}}">
+                                                                <label>پایه</label>
+                                                                <select class="form-control" name="paye_id">
+                                                                    @foreach($payes as $paye)
+                                                                        <option
+                                                                            value="{{$paye->id}}">{{$paye->title}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <br>
+                                                                <button type="submit" class="btn btn-info btn-block">انتقال</button>
+                                                            </form>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     @endcan
 
@@ -377,6 +468,8 @@
     <script src="/panel/assets/js/examples/select2.js"></script>
     <script src="/panel/assets/vendors/ckeditor/ckeditor.js"></script>
     <script src="/panel/assets/js/examples/ckeditor.js"></script>
+    <!-- begin::datepicker -->
+
 @endsection
 
 

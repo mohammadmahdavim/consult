@@ -85,14 +85,20 @@
 
         public function debtConsult()
         {
+            
             $service = service::whereNotIn('month', ['1'])->pluck('id');
             $serviceStudents = ServiceStudent::whereIn('service_id', $service)->pluck('id');
             $rows = FinanceSection::where('type_id', 2)->whereIn('service_student_id', $serviceStudents)
+            // ->where('id',5323)
                 ->with('service.service')
                 ->get();
-
+               
             foreach ($rows as $row) {
-
+// dd();
+                $servicePrice=$row->service->service->price;
+                $servicePricePerMounth=$servicePrice/$row->service->service->month;
+                $servicePricePerMounthConsult=$servicePricePerMounth*0.39;
+                // dd($servicePrice,$servicePricePerMounth);
                 $expire = $row->service->start;
                 $date = explode('/', $expire);
                 $toGregorian = \Morilog\Jalali\CalendarUtils::toGregorian($date[0], $date[1], $date[2]);
@@ -114,16 +120,18 @@
                 }
                 $price = 0;
                 if ($expire >= 1) {
-                    $price = $price + 250000;
+                    $price = $servicePricePerMounthConsult;
                 }
                 if (1 < $expire and $expire <= $row->service->service->month) {
 
-                    $price = $price + 280000;
+                    $price =$price+ $servicePricePerMounthConsult;
                 }
-                if (1 < $expire and $expire > $row->service->service->month) {
-                    $price = $price + ((($expire - 2) * 320000));
+                if (2 < $expire) {
+                    
+                    $price = $price + ((($expire - 2) *$servicePricePerMounthConsult));
                 }
                 $pay = $row->amount;
+                                // dd($price,$pay,$expire,$servicePricePerMounthConsult);
 
                 if ($pay < $price) {
                     $row->update(['debt' => 1]);

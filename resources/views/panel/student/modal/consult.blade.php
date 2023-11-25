@@ -40,6 +40,13 @@
                 <td>{{$row->field->title}}</td>
                 <td>{{$row->paye->title}}</td>
                 <td>{{$row->state->title}} ({{$row->city->title}})</td>
+                 <td>
+                                     <button type="button" class="btn btn-warning btn-sm" title="پرونده"
+                                                        onclick="modal_show('{{$row->id}}','/panel/comments');">
+                                                    <i class="fa fa-file-text-o"></i>
+                                                </button>
+                        
+                    </td>
             </tr>
             <?php
             $key = $key + 1;
@@ -53,6 +60,13 @@
                 <td>{{$row->field->title}}</td>
                 <td>{{$row->paye->title}}</td>
                 <td>{{$row->state->title}} ({{$row->city->title}})</td>
+                    <td>
+                                     <button type="button" class="btn btn-warning btn-sm" title="پرونده"
+                                                        onclick="modal_show('{{$row->id}}','/panel/comments');">
+                                                    <i class="fa fa-file-text-o"></i>
+                                                </button>
+                        
+                    </td>
             </tr>
             <?php
             $key = $key + 1;
@@ -60,6 +74,7 @@
         @endforeach
         </tbody>
     </table>
+    @include('include.modal.show')
 
 </div>
 </div>

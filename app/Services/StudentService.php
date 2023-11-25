@@ -31,6 +31,7 @@ class StudentService
     {
         $students = Student::with('user.images')
             ->with('state')
+            ->with('manager')
             ->with('serviceActive')
             ->with('city')
             ->with('field')
@@ -38,11 +39,6 @@ class StudentService
             ->with('service')
             ->with('serviceActive.consult.user')
             ->with('consult.user')
-//            ->whereHas('service', function ($q) use ($request) {
-//                if ( Input::get('service')) {
-//                    $q->where('service_id', $request->service);
-//                }
-//            })
             ->whereHas('user', function ($q) use ($request) {
                 if ($request->get('name')) {
                     $q->where('name', 'like', '%' . $request->name . '%')
@@ -51,16 +47,38 @@ class StudentService
                 if ($request->get('national_code')) {
                     $q->where('national_code', 'like', '%' . $request->national_code . '%');
                 }
+
             })
+            ->when('serviceActive', function ($q) use ($request) {
+                if ($request->get('counsult')) {
+                    $q->whereHas('serviceActive', function ($q) use ($request) {
+                        $q->whereIn('consult_id', $request->counsult);
+                    });
+                }
+            })
+            ->when($request->get('service'), function ($query) use ($request) {
+                $query->whereHas('service', function ($q) use ($request) {
+                    if ($request->get('service')) {
+                        $q->where('service_id', $request->service);
+                    }
+                });
+            })
+
             ->when($request->get('field'), function ($query) use ($request) {
                 $query->whereIn('field_id', $request->field);
+            })
+            ->when($request->get('manager_id'), function ($query) use ($request) {
+                $query->where('manager_id', $request->manager_id);
             })
             ->when($request->get('paye'), function ($query) use ($request) {
                 $query->whereIn('paye_id', $request->paye);
             })
+            ->when($request->get('super_consult_id'), function ($query) use ($request) {
+                $query->whereIn('super_consult_id', $request->super_consult_id);
+            })
             ->when($request->get('status'), function ($query) use ($request) {
                 if ($request->status == 'active') {
-                    $query->whereIn('status', [$request->status, 'mid-term','72','24']);
+                    $query->whereIn('status', [$request->status, 'mid-term', '72', '24']);
                 } else {
                     $query->where('status', [$request->status]);
 

@@ -224,8 +224,8 @@
                         <div class="col-lg-10">
                             <div class="tm-callback">
                                 <h2>ارتباط با ما</h2>
-                                <p>
-                                    شما می توانید اطلاعتتان را برای ما در اینجا وارد کنید تا در اسرع وقت با شما تماس
+                             <p>
+                                    شما می توانید جهت پیش ثبت نام در طرح پشتیبان ویژه اطلاعتتان را اینجا وارد کنید تا در اسرع وقت با شما تماس
                                     گرفته شود.
                                 </p>
                                 <form action="#" class="tm-form">
@@ -421,73 +421,73 @@
                         </div>
                     </div>
                 </div>
-                <div class="row testimonial-slider-active">
+                <!--<div class="row testimonial-slider-active">-->
 
                     <!-- Testimonial -->
-                    <div class="col-lg-6">
-                        <div class="tm-testimonial">
-                            <div class="tm-testimonial-content">
-                                <i class="fa fa-quote-left"></i>
-                                <p>
-                                </p>
-                            </div>
-                            <div class="tm-testimonial-bottom">
-                                <div class="tm-testimonial-authorimage">
-                                    <img src="/home/assets/images/authors/author-image-4.jpg" alt="author image">
-                                </div>
-                                <div class="tm-testimonial-authorcontent">
-                                    <h5>سیسیلیا ماس</h5>
-                                    <p>رهبر تیم</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!--    <div class="col-lg-6">-->
+                <!--        <div class="tm-testimonial">-->
+                <!--            <div class="tm-testimonial-content">-->
+                <!--                <i class="fa fa-quote-left"></i>-->
+                <!--                <p>-->
+                <!--                </p>-->
+                <!--            </div>-->
+                <!--            <div class="tm-testimonial-bottom">-->
+                <!--                <div class="tm-testimonial-authorimage">-->
+                <!--                    <img src="/home/assets/images/authors/author-image-4.jpg" alt="author image">-->
+                <!--                </div>-->
+                <!--                <div class="tm-testimonial-authorcontent">-->
+                <!--                    <h5>سیسیلیا ماس</h5>-->
+                <!--                    <p>رهبر تیم</p>-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--        </div>-->
+                <!--    </div>-->
                     <!--// Testimonial -->
 
                     <!-- Testimonial -->
-                    <div class="col-lg-6">
-                        <div class="tm-testimonial">
-                            <div class="tm-testimonial-content">
-                                <i class="fa fa-quote-left"></i>
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و</p>
-                            </div>
-                            <div class="tm-testimonial-bottom">
-                                <div class="tm-testimonial-authorimage">
-                                    <img src="/home/assets/images/authors/author-image-3.jpg" alt="author image">
-                                </div>
-                                <div class="tm-testimonial-authorcontent">
-                                    <h5>سیسیلیا ماس</h5>
-                                    <p>رهبر تیم</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!--    <div class="col-lg-6">-->
+                <!--        <div class="tm-testimonial">-->
+                <!--            <div class="tm-testimonial-content">-->
+                <!--                <i class="fa fa-quote-left"></i>-->
+                <!--                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان-->
+                <!--                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و</p>-->
+                <!--            </div>-->
+                <!--            <div class="tm-testimonial-bottom">-->
+                <!--                <div class="tm-testimonial-authorimage">-->
+                <!--                    <img src="/home/assets/images/authors/author-image-3.jpg" alt="author image">-->
+                <!--                </div>-->
+                <!--                <div class="tm-testimonial-authorcontent">-->
+                <!--                    <h5>سیسیلیا ماس</h5>-->
+                <!--                    <p>رهبر تیم</p>-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--        </div>-->
+                <!--    </div>-->
                     <!--// Testimonial -->
 
                     <!-- Testimonial -->
-                    <div class="col-lg-6">
-                        <div class="tm-testimonial">
-                            <div class="tm-testimonial-content">
-                                <i class="fa fa-quote-left"></i>
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و
-                                    برای شرایط فعل</p>
-                            </div>
-                            <div class="tm-testimonial-bottom">
-                                <div class="tm-testimonial-authorimage">
-                                    <img src="/home/assets/images/authors/author-image-2.jpg" alt="author image">
-                                </div>
-                                <div class="tm-testimonial-authorcontent">
-                                    <h5>سیسیلیا ماس</h5>
-                                    <p>رهبر تیم</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!--    <div class="col-lg-6">-->
+                <!--        <div class="tm-testimonial">-->
+                <!--            <div class="tm-testimonial-content">-->
+                <!--                <i class="fa fa-quote-left"></i>-->
+                <!--                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان-->
+                <!--                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و-->
+                <!--                    برای شرایط فعل</p>-->
+                <!--            </div>-->
+                <!--            <div class="tm-testimonial-bottom">-->
+                <!--                <div class="tm-testimonial-authorimage">-->
+                <!--                    <img src="/home/assets/images/authors/author-image-2.jpg" alt="author image">-->
+                <!--                </div>-->
+                <!--                <div class="tm-testimonial-authorcontent">-->
+                <!--                    <h5>سیسیلیا ماس</h5>-->
+                <!--                    <p>رهبر تیم</p>-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--        </div>-->
+                <!--    </div>-->
                     <!--// Testimonial -->
 
-                </div>
+                <!--</div>-->
             </div>
         </div>
         <!--// Testimonial Area -->

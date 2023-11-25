@@ -69,6 +69,7 @@
                                             <span>نقش</span>
                                             <select id="role" class="form-control" name="role">
                                                 <option value="admin">مدیر</option>
+                                                <option value="super_consult">سرمشاور</option>
                                                 <option value="caller">جذب کننده</option>
                                                 <option value="semi_admin">مدیر بدون مالی</option>
                                             </select>

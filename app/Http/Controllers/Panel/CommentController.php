@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Exports\CommentExport;
 use App\Http\Controllers\Controller;
 use App\Models\Document;
 use App\Models\Student;
 use App\Models\TypeDocument;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Morilog\Jalali\Jalalian;
 
 class CommentController extends Controller
 {
@@ -22,11 +25,10 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->show)
-        {
-            $show=0;
-        }else{
-            $show=1;
+        if (!$request->show) {
+            $show = 0;
+        } else {
+            $show = 1;
         }
         Document::create([
             'author' => auth()->user()->id,
@@ -44,5 +46,11 @@ class CommentController extends Controller
     {
         $row = Document::find($id);
         $row->delete();
+    }
+
+    public function export()
+    {
+        $date = Jalalian::now()->format('Y-m-d');
+        return Excel::download(new CommentExport(), $date . '' . 'خروجی کامنت ها در تاریخ.xlsx');
     }
 }

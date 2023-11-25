@@ -56,6 +56,12 @@
                            id="exampleInputPassword1"
                            placeholder="رمز عبور">
                 </div>
+                <div class="form-group mb-4">
+                  <select class="form-control" name="year">
+                      <option value="consult">1402</option>
+                      <option value="kanoonba_consult">1401</option>
+                  </select>
+                </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block btn-uppercase mb-4">ورود</button>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="custom-control custom-checkbox">

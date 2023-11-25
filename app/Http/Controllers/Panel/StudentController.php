@@ -24,9 +24,12 @@ use App\Services\TransactionService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\Jalalian;
+
 
 class StudentController extends Controller
 {
@@ -52,7 +55,6 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-
         $user = auth()->user();
         if ($user->role == 'consult') {
             $consult = consult::where('user_id', $user->id)->pluck('id')->first();
@@ -64,6 +66,10 @@ class StudentController extends Controller
             $rows = $this->studentService->getStudent($request)
                 ->where('caller', $user->id)
                 ->paginate(20);
+        } elseif ($user->role == 'super_consult') {
+            $rows = $this->studentService->getStudent($request)
+                ->where('super_consult_id', $user->id)
+                ->paginate(20);
         } else {
             $rows = $this->studentService->getStudent($request)
                 ->paginate(20);
@@ -72,8 +78,12 @@ class StudentController extends Controller
         $payes = Paye::all();
         $services = service::all();
         $types = TypeDocument::all();
+        $managers = Student::pluck('manager_id')->unique();
+        $managers = User::whereIn('id', $managers)->get();
+        $callers = User::whereIn('role', ['admin', 'super_consult'])->get();
+        $consults = consult::with('user')->get();
 
-        return view('panel.student.index', ['types' => $types, 'rows' => $rows, 'services' => $services, 'fields' => $fields, 'payes' => $payes]);
+        return view('panel.student.index', ['types' => $types, 'consults' => $consults, 'callers' => $callers, 'rows' => $rows, 'services' => $services, 'fields' => $fields, 'payes' => $payes, 'managers' => $managers]);
     }
 
     /**
@@ -87,7 +97,7 @@ class StudentController extends Controller
         $fields = FieldSchool::all();
         $states = state::where('parent', 0)->get();
         $services = service::all();
-        $callers = User::whereIn('role', ['consult', 'caller', 'admin'])->get();
+        $callers = User::whereIn('role', ['consult', 'caller', 'admin', 'super_consult'])->get();
         return view('panel.student.create', [
             'payes' => $payes,
             'fields' => $fields,
@@ -127,6 +137,8 @@ class StudentController extends Controller
             'user_id' => $user->id,
             'state_id' => $request->state_id,
             'caller' => $request->caller,
+            'manager_id' => $request->manager_id,
+            'super_consult_id' => $request->super_consult_id,
             'city_id' => $request->city_id,
             'field_id' => $request->field_id,
             'paye_id' => $request->paye_id,
@@ -161,7 +173,7 @@ class StudentController extends Controller
         $states = state::where('parent', 0)->get();
         $fields = FieldSchool::all();
         $services = service::all();
-        $callers = User::whereIn('role', ['consult', 'caller', 'admin'])->get();
+        $callers = User::whereIn('role', ['consult', 'caller', 'admin', 'super_consult'])->get();
         return view('panel.student.edit', [
             'row' => $row,
             'payes' => $payes,
@@ -206,12 +218,19 @@ class StudentController extends Controller
             'city_id' => $request->city_id,
             'field_id' => $request->field_id,
             'caller' => $request->caller,
+            'manager_id' => $request->manager_id,
+            'super_consult_id' => $request->super_consult_id,
             'description' => $request->description,
             'mobile' => $request->mobile,
             'mobile2' => $request->mobile2,
             'kanoon' => $kanoon,
             'counter' => $request->counter,
         ]);
+        $services = ServiceStudent::where('student_id', $row->id)->pluck('id');
+        $finances = FinanceSection::whereIn('service_student_id', $services)->where('type_id', 3)->get();
+        foreach ($finances as $finance) {
+            $finance->update(['user_id' => $request->caller]);
+        }
         alert('عملیات موفق', 'عملیات با موفقیت انجام شد');
         return redirect('panel/student');
     }
@@ -285,16 +304,19 @@ class StudentController extends Controller
 
     public function serviceFinanceStore(Request $request, $id)
     {
-
         $serviceStudent = ServiceStudent::where('id', $id)->with('consult.user')->with('student.user')->with('student.callerStudent')->first();
+        //   dd($serviceStudent->student->super_consult_id);
+
         $this->serviceFinanceStoreRow($serviceStudent->student->user->id, 1, $id, $request->amount1, $request->date1, $request->code1);
         $this->serviceFinanceStoreRow($serviceStudent->consult->user->id, 2, $id, $request->amount2, $request->date2, $request->code2);
         $this->serviceFinanceStoreRow($serviceStudent->student->callerStudent->id, 3, $id, $request->amount3, $request->date3, $request->code3);
         $this->serviceFinanceStoreRow(config('global.manager_id'), 4, $id, $request->amount4, $request->date4, $request->code4);
-        $this->serviceFinanceStoreRow(config('global.site_id'), 5, $id, $request->amount5, $request->date5, $request->code5);
+        $this->serviceFinanceStoreRow($serviceStudent->student->super_consult_id, 5, $id, $request->amount5, $request->date5, $request->code5);
+        $this->serviceFinanceStoreRow($serviceStudent->consult->user->id, 6, $id, $request->amount6, $request->date6, $request->code6);
         $this->transactionService->calculation($serviceStudent->student->id);
         $this->studentService->setStatus($serviceStudent->student->id);
         $this->transactionService->debtConsult();
+//        $this->transactionService->debtSuperConsult();
         return back();
     }
 
@@ -315,6 +337,7 @@ class StudentController extends Controller
         } else {
             $financeSection->update([
                 'author' => auth()->user()->id,
+                'user_id' => $user,
                 'amount' => $amount,
                 'date' => $date,
                 'code' => $code,
@@ -423,6 +446,45 @@ class StudentController extends Controller
         $types = TypeDocument::all();
 
         return view('panel.student.index', ['types' => $types, 'rows' => $rows, 'services' => $services, 'fields' => $fields, 'payes' => $payes]);
+    }
+
+    public function forward(Request $request)
+    {
+        $row = Student::where('id', $request->student)->with('user')->first();
+        DB::disconnect();
+        Config::set('database.connections.mysql.database', 'kanoonba_1402');
+        DB::reconnect();
+        $user = User::create([
+            'name' => $row->user->name,
+            'section' => $row->user->section,
+            'family' => $row->user->family,
+            'gender' => $row->user->gender,
+            'national_code' => $row->user->national_code,
+            'mobile' => $row->user->mobile,
+            'role' => 'student',
+            'password' => Hash::make($row->user->national_code),
+        ]);
+        $user->syncRoles('student');
+        $student = Student::create([
+            'user_id' => $user->id,
+            'state_id' => $row->state_id,
+            'caller' => $row->caller,
+            'manager_id' => $row->manager_id,
+            'super_consult_id' => $row->super_consult_id,
+            'city_id' => $row->city_id,
+            'field_id' => $row->field_id,
+            'paye_id' => $request->paye_id,
+            'mobile' => $row->mobile,
+            'mobile2' => $row->mobile2,
+            'kanoon' => $row->kanoon,
+            'counter' => $row->counter,
+            'description' => $row->description,
+        ]);
+        DB::disconnect();
+        Config::set('database.connections.mysql.database', 'consulting2');
+        DB::reconnect();
+        alert('عملیات موفق', 'عملیات با موفقیت انجام شد');
+        return back();
     }
 
 

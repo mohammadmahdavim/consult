@@ -17,16 +17,20 @@
     @csrf
     <div class="modal-body">
         <div class="row">
+             @can('finance-student-show')
             <div class="col-md-2">
                 <span>دانش آموز</span>
             </div>
             <div class="col-md-3">
-                <input class="form-control" name="amount1" placeholder="مبلغ" @if($financeSection->where('type_id',1)->pluck('amount')->first()) value="{{$financeSection->where('type_id',1)->pluck('amount')->first()}}" @else value="{{$amount}}" @endif
-                       >
+                <input class="form-control" name="amount1" placeholder="مبلغ"
+                       @if($financeSection->where('type_id',1)->pluck('amount')->first()) value="{{$financeSection->where('type_id',1)->pluck('amount')->first()}}"
+                       @else value="{{$amount}}" @endif
+                >
             </div>
             <div class="col-md-3">
                 <input class="form-control" readonly name="date1" id="date-picker-shamsi-4"
-                       @if($financeSection->where('type_id',1)->pluck('date')->first()) value="{{$financeSection->where('type_id',1)->pluck('date')->first()}}" @else value="{{$date}}" @endif
+                       @if($financeSection->where('type_id',1)->pluck('date')->first()) value="{{$financeSection->where('type_id',1)->pluck('date')->first()}}"
+                       @else value="{{$date}}" @endif
                        value="{{$financeSection->where('type_id',1)->pluck('date')->first()}}"
                        placeholder="تاریخ پرداخت">
             </div>
@@ -37,7 +41,7 @@
 
         </div>
         <br>
-        @can('finance-student-show')
+       
 
             <div class="row">
                 <div class="col-md-2">
@@ -97,10 +101,11 @@
                            value="{{$financeSection->where('type_id',4)->pluck('code')->first()}}">
                 </div>
             </div>
+             @endcan
             <br>
             <div class="row">
                 <div class="col-md-2">
-                    <span>پشتیبانی</span>
+                    <span>سرمشاور</span>
                 </div>
                 <div class="col-md-3">
                     <input name="amount5" class="form-control" placeholder="مبلغ"
@@ -118,7 +123,28 @@
 
             </div>
             <br>
-        @endcan
+            <div class="row">    
+                <div class="col-md-2">
+                    
+                    <span>جریمه</span>
+                </div>
+                <div class="col-md-3">
+                    <input name="amount6" class="form-control" placeholder="مبلغ"
+                           value="{{$financeSection->where('type_id',6)->pluck('amount')->first()}}">
+                </div>
+                <div class="col-md-3">
+                    <input readonly name="date6" class="form-control" id="date-picker-shamsi-8"
+                           placeholder="تاریخ پرداخت"
+                           value="{{$financeSection->where('type_id',6)->pluck('date')->first()}}">
+                </div>
+                <div class="col-md-3">
+                    <input name="code6" class="form-control" placeholder="کد رهگیری"
+                           value="{{$financeSection->where('type_id',6)->pluck('code')->first()}}">
+                </div>
+
+            </div>
+        
+       
         <button type="button" class="btn btn-danger"
                 data-dismiss="modal"
                 aria-label="Close">

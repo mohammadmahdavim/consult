@@ -33,7 +33,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::orderBy('id', 'DESC')->Where('role', 'caller')
+        $users = User::orderBy('id', 'DESC')->WhereIn('role', ['caller','super_consult'])
             ->when($request->get('name'), function ($query) use ($request) {
                 $query->where('name', 'like', '%' . EnConverter::ar2fa($request->name) . '%');
             })

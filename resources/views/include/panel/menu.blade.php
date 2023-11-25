@@ -5,7 +5,9 @@
             <li><a class="active" href="/panel/index"><i class="fa fa-male"></i><i class="fa fa-pho"></i>
                     <span>داشبورد</span> </a></li>
             @can('slider')
-                <li><a href="#"><i class="icon ti-layers-alt"></i> <span>مدیریت سایت</span> </a>
+                <li><a href="#"><i class="icon ti-layers-alt"></i> <span>مدیریت سایت
+                  <x-ContactUs :/>
+                </span> </a>
                     <ul>
 
                         @can('slider')
@@ -37,7 +39,10 @@
                             <li><a href="/panel/home/about_us">درباره ما </a></li>
                         @endcan
                         @can('contact')
-                            <li><a href="/panel/home/contact_us">تماس با ما </a></li>
+                            <li><a href="/panel/home/contact_us">تماس با ما
+                              <x-ContactUs :/>
+                            </a></li>
+
                         @endcan
                     </ul>
                 </li>
@@ -126,10 +131,23 @@
                         بدهکاری به مدیریت
                         <x-DebtorManager :/>
                     </a></li>
+                           <li><a href="/panel/home/super_consult_debt">
+                            <i class="icon ti-user"></i>
+                            بدهکاری به سرمشاور
+                            <x-DebtSuperConsult :/>
+                        </a></li>
                 <li><a href="/panel/financeExcel">
                         <i class="icon ti-money"></i>
                         اکسل مالی
                     </a></li>
+                      <li><a href="/panel/home/contact_us_2/export">
+                        <i class="icon ti-money"></i>
+                        اکسل  همایش
+                    </a></li>
+                    <li><a href="/panel/comments">
+                            <i class="icon ti-comment"></i>
+                            اکسل  کامنت ها
+                        </a></li>
             @endcan
             @endcan
 

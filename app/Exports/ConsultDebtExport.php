@@ -29,6 +29,8 @@ class ConsultDebtExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
+            'مدیر',
+            'سرمشاور',
             'مشاور',
             'دانش ‌آموز',
             'دوره',
@@ -40,6 +42,8 @@ class ConsultDebtExport implements FromCollection, WithHeadings, WithMapping
     {
 
         return [
+            ($preflight->service->student->manager ? $preflight->service->student->manager->name . ' ' . $preflight->service->student->manager->family : ''),
+            ($preflight->service->student->super_consult ? $preflight->service->student->super_consult->name . ' ' . $preflight->service->student->super_consult->family : ''),
             ($preflight->service->consult->user ? $preflight->service->consult->user->name . ' ' . $preflight->service->consult->user->family : ''),
             ($preflight->service->student->user ? $preflight->service->student->user->name . ' ' . $preflight->service->student->user->family : ''),
             ($preflight->service->service ? $preflight->service->service->title . ' (' . $preflight->service->service->price . ')' : ''),

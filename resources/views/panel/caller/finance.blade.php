@@ -64,8 +64,8 @@
                                         <tr style="text-align: center">
                                             <td>{{$key+1}}</td>
                                             <td>{{$row->service->student->user->name}} {{$row->service->student->user->family}}</td>
-                                            <td>{{\Morilog\Jalali\Jalalian::forge($row->service->student->created_at)->format('%A, %d %B %y')}}</td>
-                                            <td>{{\Morilog\Jalali\Jalalian::forge($row->created_at)->format('%A, %d %B %y')}}</td>
+                                            <td>{{$row->service->start}}</td>
+                                            <td>{{$row->date}}</td>
                                             <td>{{number_format($row->amount)}}</td>
                                             <?php
                                             $sum = $sum + $row->amount;

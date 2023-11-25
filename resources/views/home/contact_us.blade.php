@@ -10,11 +10,17 @@
                 <div class="row">
                     <form method="post" action="/home/contact/store">
                         @csrf
+                        <input name="user_id" hidden value="{{$id}}">
                         <div class="col-lg-10">
                             <div class="tm-callback">
                                 <h2>ارتباط با ما</h2>
+                                  <p>
+                                   توجه : هزینه ماهانه ثبت نام در  این طرح 
+                                   800
+                                   هزار تومان می باشد.
+                                </p>
                                 <p>
-                                    شما می توانید اطلاعتتان را برای ما در اینجا وارد کنید تا در اسرع وقت با شما تماس
+                                    شما می توانید جهت پیش ثبت نام در طرح پشتیبان ویژه اطلاعتتان را اینجا وارد کنید تا در اسرع وقت با شما تماس
                                     گرفته شود.
                                 </p>
                                 <form action="#" class="tm-form">
@@ -60,12 +66,12 @@
 
                                     </i></div>
                             </div><br>
-                            <div class="d-flex flex-row">
-                                <div class="p-2">شماره واتساپ: 09210915874</div>
-                                <div class="p-2">
-                                    <i class="fa fa-whatsapp fa-3x"></i>
-                                </div>
-                            </div>
+                            <!--<div class="d-flex flex-row">-->
+                            <!--    <div class="p-2">شماره واتساپ: 09210915874</div>-->
+                            <!--    <div class="p-2">-->
+                            <!--        <i class="fa fa-whatsapp fa-3x"></i>-->
+                            <!--    </div>-->
+                            <!--</div>-->
                         </div>
                     </form>
                 </div>

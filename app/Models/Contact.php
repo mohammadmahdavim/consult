@@ -21,4 +21,8 @@ class Contact extends Model
         return $this->belongsTo(Paye::class,'paye')->withDefault();
     }
 
+public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault();
+    }
 }

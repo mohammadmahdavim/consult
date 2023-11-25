@@ -93,6 +93,19 @@
                                                                     @if($type->id==request()->type_id) selected @endif>{{$type->name}}</option>
                                                         @endforeach
                                                     </select>
+                                                     </div>
+                                                    <div class="p-2">
+                                                    <span>مدیر</span>
+                                                    <select class="form-control" dir="rtl"
+                                                            name="manager">
+                                                        <option selected value=""></option>
+                                                        @foreach($managers as $manager)
+                                                            <option value="{{$manager->id}}"
+                                                                    @if($manager->id==request()->manager) selected @endif>{{$manager->name}}
+                                                                    {{$manager->family}}
+                                                                    </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="p-2">
                                                     <br>
@@ -114,7 +127,9 @@
                             <thead>
                             <tr style="text-align: center">
                                 <th>#</th>
-                                <th>دانش آموز</th>
+                          
+                                  <th>مدیر</th>
+                                   <th>دانش آموز</th>
                                 <th>اعلان</th>
                                 <th>عملیات</th>
 
@@ -124,7 +139,14 @@
                             @foreach($rows as $key=>$row)
                                 <tr style="text-align: center">
                                     <td>{{$key+1}}</td>
-
+  <td>
+      @if($row->user->student->manager)                               
+                                            {{$row->user->student->manager->name}}
+                                             {{$row->user->student->manager->family}}
+                                        
+                                            @endif
+                                       
+                                    </td>
                                     <td>
                                         <a href="/panel/student/service/{{$row->user->student->id}}">
                                             {{$row->user->name}} {{$row->user->family}}

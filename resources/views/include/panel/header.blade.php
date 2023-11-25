@@ -60,11 +60,7 @@
                         <i class="fa fa-search"></i>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-notify sidebar-open" data-sidebar-target="#messages">
-                        <i class="fa fa-envelope"></i>
-                    </a>
-                </li>
+            
                 @can('notif-student')
                 <li class="nav-item">
                     <a href="/panel/notification" class="nav-link nav-link-notify " >
@@ -73,6 +69,13 @@
                         </i>
                     </a>
                 </li>
+                    <li class="nav-item">
+                        <a href="/panel/reminder/list" class="nav-link nav-link-notify" title="reminder">
+                            <i class="fa fa-bell-o">
+                                <x-Reminder :/>
+                            </i>
+                        </a>
+                    </li>
                 @endcan
                 <li style="color:#000;">
                     {{auth()->user()->name}} -

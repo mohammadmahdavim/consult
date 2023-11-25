@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class)->withDefault();
     }
+
+    public function reminder()
+    {
+        return $this->hasMany(Reminder::class);
+    }
 }

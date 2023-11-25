@@ -1,5 +1,7 @@
 @extends('layouts.panel')
 @section('css')
+    <link rel="stylesheet" href="/panel/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/panel/assets/vendors/datepicker/daterangepicker.css">
 @endsection
 @section('content')
     <main class="main-content">
@@ -21,6 +23,9 @@
             <!-- end::page header -->
             <div class="card">
                 <div class="card-body">
+                    <a href="/panel/home/contact_us/export">
+                        <button class="btn btn-danger">خروجی اکسل</button>
+                    </a>
                     <div class="card-title">
                         <h5>لیست درخواست تماس ها</h5>
                     </div>
@@ -33,24 +38,98 @@
                                 <th>کد ملی</th>
                                 <th>رشته</th>
                                 <th>پایه</th>
-                                <th>رسیدگی</th>
+                                        <th>
+                                        تاریخ ثبت دانش آموز
+                                        </th>
+                                <th>کامنت</th>
 
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($contacts as $row)
-                                <tr @if($row->read==1) style="text-align: center;background-color: red"
-                                    @else style="text-align: center" @endif>
+                                <tr @if($row->status=='ثبت نام شد' and $row->last_call_date) style="text-align: center;background-color:green"
+                                @elseif($row->status=='ثبت نام نمیکنه' and $row->last_call_date) style="text-align: center;background-color: red"
+                                  @elseif($row->status=='نیاز به پیگیری مجدد' and $row->last_call_date) style="text-align: center;background-color:yellow"
+                                  @elseif($row->status=='تکراری' and $row->last_call_date) style="text-align: center;background-color:grey"
+                                    @else style="text-align: center"
+                                    @endif
+                                    >
                                     <td>{{$row->name}}</td>
                                     <td>{{$row->mobile}}</td>
                                     <td>{{$row->national_code}}</td>
                                     <td>{{$row->FieldSchool->title}}</td>
                                     <td>{{$row->payeSchool->title}}</td>
-                                    <td style="text-align: center">
-                                        <input style="text-align: center" type="checkbox" class="form-check-input"
-                                               id="materialUnchecked"
-                                               {{ $row->read ? 'checked' : '' }} onclick="changeStatus('{{$row->id}}',this) ">
+                                    <td>
+                                                            {{\Morilog\Jalali\Jalalian::forge($row->created_at)}}
+
                                     </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModalLong{{$row->id}}">
+                                            ثبت وضعیت
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong{{$row->id}}" tabindex="-1"
+                                             role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="exampleModalLongTitle">{{$row->name}}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/panel/home/contact/update/{{$row->id}}"
+                                                              method="post">
+                                                            @csrf
+w
+                                                            <div class="row">
+
+                                                                <div class="col-md-3">
+                                                                    <label>تاریخ آخرین تماس</label>
+                                                                    <input name="date-picker-shamsi" class="form-control"  value="{{$row->last_call_date}}">
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label>وضعیت</label>
+                                                                    <select name="status" class="form-control">
+                                                                        <option></option>
+                                                                        <option @if($row->status=='ثبت نام شد') selected @endif>ثبت نام شد</option>
+                                                                        <option @if($row->status=='ثبت نام نمیکنه') selected @endif>ثبت نام نمیکنه</option>
+                                                                        <option @if($row->status=='نیاز به پیگیری مجدد') selected @endif>نیاز به پیگیری مجدد</option>
+                                                                        <option @if($row->status=='تکراری') selected @endif>تکراری</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-9">
+                                                                    <label>کامنت</label>
+                                                                    <textarea name="description" class="form-control">
+                                                               {!! $row->description !!}
+                                                            </textarea>
+                                                                </div>
+
+                                                            </div>
+<br>
+                                                            <button class="btn btn-block btn-success">submit</button>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {{--                                    <td style="text-align: center">--}}
+
+
+                                    {{--                                        <input style="text-align: center" type="checkbox" class="form-check-input"--}}
+                                    {{--                                               id="materialUnchecked"--}}
+                                    {{--                                               {{ $row->read ? 'checked' : '' }} onclick="changeStatus('{{$row->id}}',this) ">--}}
+                                    {{--                                    </td>--}}
                                 </tr>
                             @endforeach
                             </tbody>
@@ -125,6 +204,12 @@
 
         }
     </script>
+    <!-- begin::datepicker -->
+    <script src="/panel/assets/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/panel/assets/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/panel/assets/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/panel/assets/js/examples/datepicker.js"></script>
+    <!-- end::datepicker -->
 @endsection
 
 

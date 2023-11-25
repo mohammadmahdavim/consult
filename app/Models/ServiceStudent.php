@@ -55,6 +55,18 @@ class ServiceStudent extends Model
         return $this->hasOne(FinanceSection::class, 'service_student_id')->where('type_id', $type)->withDefault();
     }
 
+    public function financeSuperConsult()
+    {
+        $type = FinanceSectionType::where('name', 'site')->pluck('id')->first();
+        return $this->hasOne(FinanceSection::class, 'service_student_id')->where('type_id', 5)->withDefault();
+    }
+
+    public function financePenalty()
+    {
+        $type = FinanceSectionType::where('name', 'penalty')->pluck('id')->first();
+        return $this->hasOne(FinanceSection::class, 'service_student_id')->where('type_id', 6)->withDefault();
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', 1);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel\Home;
 use App\Exports\ConsultDebtExport;
 use App\Exports\ConsultSxport;
 use App\Exports\StudentExport;
+use App\Exports\SuperConsultDebtExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ConsultRequest;
 use App\Models\consult;
@@ -249,6 +250,7 @@ class ConsultController extends Controller
             })
             ->get();
         $rows2 = FinanceSection::where('type_id', 2)->where('debt', 1)->get();
+        // return $rows2;
         $rows = array_merge($rows->all(), $rows2->all());
         return view('panel.home.consult.debt', ['rows' => $rows]);
 
@@ -260,6 +262,29 @@ class ConsultController extends Controller
         return Excel::download(new ConsultDebtExport($request), $date . '' . 'خروجی بدهکاری به مشاور در تاریخ.xlsx');
     }
 
+    public function superdebt()
+    {
+//        $rows = FinanceSection::where('type_id', 5)->where('amount', null)->where('debt', 0)
+//            ->whereHas('service', function ($q) {
+//                $q->where('start', '<', Jalalian::now()->subMonths(1)->format('Y/m/d'));
+//            })
+//            ->get();
+//        $rows2 = FinanceSection::where('type_id', 5)->where('debt', 1)->get();
+//        $rows = array_merge($rows->all(), $rows2->all());
+        $rows = FinanceSection::where('type_id', 5)->where('amount', null)
+            ->whereHas('service', function ($q) {
+            })
+            ->get();
+        return view('panel.home.consult.super_debt', ['rows' => $rows]);
+
+    }
+
+    public function superconsultDebt(Request $request)
+    {
+        $date = Jalalian::now()->format('Y-m-d');
+        return Excel::download(new SuperConsultDebtExport(), $date . '' . 'خروجی بدهکاری به سر مشاور در تاریخ.xlsx');
+    }
+    
     public function changeStatus(Request $request)
     {
         $karnameh = consult::find($request->id);

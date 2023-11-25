@@ -22,7 +22,16 @@ class FinanceExport implements FromCollection, WithHeadings, WithMapping
             'financeConsult' => function ($query) {
                 $query->select('id', 'user_id', 'amount', 'date', 'service_student_id');
             },
+            'financePenalty' => function ($query) {
+                $query->select('id', 'user_id', 'amount', 'date', 'service_student_id');
+            },
             'financeConsult.user' => function ($query) {
+                $query->select('id', 'name', 'family');
+            },
+            'financeSuperConsult' => function ($query) {
+                $query->select('id', 'user_id', 'amount', 'date', 'service_student_id');
+            },
+            'financeSuperConsult.user' => function ($query) {
                 $query->select('id', 'name', 'family');
             },
             'financeStudent' => function ($query) {
@@ -54,6 +63,7 @@ class FinanceExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'دوره',
+            'مدیر',
             'دانش آموز',
             'مبلغ دانش آموز',
             'تاریخ واریز دانش آموز',
@@ -66,6 +76,11 @@ class FinanceExport implements FromCollection, WithHeadings, WithMapping
             'مدیریت',
             'مبلغ مدیریت',
             'تاریخ واریز مدیریت',
+            'سر مشاور',
+            'مبلغ سر مشاور',
+            'تاریخ واریز سر مشاور',
+            'مبلغ جریمه',
+            'تاریخ ثبت جریمه',
             'مانده',
         ];
     }
@@ -74,7 +89,10 @@ class FinanceExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             $preflight->service->title,
+            ($preflight->student->manager ? $preflight->student->manager->name . ' ' . $preflight->student->manager->family : ''),
+
             ($preflight->financeStudent->user ? $preflight->financeStudent->user->name . ' ' . $preflight->financeStudent->user->family : ''),
+
             $preflight->financeStudent->amount,
             $preflight->financeStudent->date,
             ($preflight->financeConsult->user ? $preflight->financeConsult->user->name . ' ' . $preflight->financeConsult->user->family : ''),
@@ -86,7 +104,12 @@ class FinanceExport implements FromCollection, WithHeadings, WithMapping
             ($preflight->financeManager->user ? $preflight->financeManager->user->name . ' ' . $preflight->financeManager->user->family : ''),
             $preflight->financeManager->amount,
             $preflight->financeManager->date,
-            $preflight->financeStudent->amount-( $preflight->financeConsult->amount+$preflight->financeCaller->amount+ $preflight->financeManager->amount)
+            ($preflight->financeSuperConsult->user ? $preflight->financeSuperConsult->user->name . ' ' . $preflight->financeSuperConsult->user->family : ''),
+            $preflight->financeSuperConsult->amount,
+            $preflight->financeSuperConsult->date,
+            $preflight->financePenalty->amount,
+            $preflight->financePenalty->date,
+            $preflight->financeStudent->amount - ($preflight->financeConsult->amount + $preflight->financeCaller->amount + $preflight->financeManager->amount + $preflight->financeSuperConsult->amount + $preflight->financePenalty->amount)
         ];
     }
 }

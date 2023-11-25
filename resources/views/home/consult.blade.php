@@ -50,7 +50,7 @@
                                             <div class="tm-blog-imageslider tm-slider-arrow tm-slider-dots">
                                                 @if($consult->user->images)
                                                     @foreach($consult->user->images as $image)
-                                                        <a href="blog-details-gallery.html"
+                                                        <a href="/home/contact_us/{{$consult->user->id}}"
                                                            class="blogitem-imageslider-image">
                                                             <img class="rounded" src="{{asset('user_photos')}}/{{$image->file }}"
                                                                  alt="blog image"
@@ -62,12 +62,12 @@
                                             <div class="tm-blog-content">
                                                 <div class="tm-blog-meta">
                                         <span><i class="fa fa-user-o"></i><a
-                                                href="blog.html"> {{$consult->user->name}}  {{$consult->user->family}} </a></span>
+                                                href="/home/contact_us/{{$consult->user->id}}"> {{$consult->user->name}}  {{$consult->user->family}} </a></span>
                                                     <span><i class="fa fa-calendar-o"></i>ورودی {{$consult->year->title}}</span>
 
                                                 </div>
                                                 <h5>
-                                                    <a href="blog-details-gallery.html">{{$consult->university->title}}({{$consult->field->title}})</a>
+                                                    <a href="//home/contact_us/{{$consult->user->id}}">{{$consult->university->title}}({{$consult->field->title}})</a>
                                                 </h5>
 
                                             </div>

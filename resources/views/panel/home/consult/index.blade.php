@@ -129,6 +129,10 @@
                                                                     <a href="/panel/student/single/{{$service->student->id}}">
                                                                         {{$service->student->user->name}} {{$service->student->user->family}}
                                                                     </a>
+                                                                     <button type="button" class="btn btn-warning btn-sm" title="پرونده"
+                                                        onclick="modal_show('{{$service->student->id}}','/panel/comments');">
+                                                    <i class="fa fa-file-text-o"></i>
+                                                </button>
                                                                 </li>
                                                             @endforeach
                                                         </ol>

@@ -142,6 +142,33 @@
                                             </select>
 
                                         </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="consult_id">مدیر</label>
+                                            <select class="form-control" name="manager_id">
+                                                @foreach($callers as $caller)
+                                                    <option
+                                                        @if($row->manager_id==$caller->id) selected
+                                                        @endif
+                                                        value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
+                                                @endforeach
+
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-md-3 mb-3">
+                                            <label for="consult_id">سرمشاور</label>
+                                            <select class="form-control" name="super_consult_id">
+                                                @foreach($callers as $caller)
+                                                    <option
+                                                        @if($row->super_consult_id==$caller->id) selected
+                                                        @endif
+                                                        value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
+                                                @endforeach
+
+                                            </select>
+
+                                        </div>
                                     @endcan
 
                                 </div>

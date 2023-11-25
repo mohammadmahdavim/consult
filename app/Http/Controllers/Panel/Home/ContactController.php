@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers\Panel\Home;
 
+use App\Exports\ContactExport;
+use App\Exports\Contact2Export;
+use App\Exports\ManagerFinanceExport;
 use App\Http\Controllers\Controller;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Morilog\Jalali\Jalalian;
 
 class ContactController extends Controller
 {
+    public function export(Request $request)
+    {
+        $date = Jalalian::now()->format('Y-m-d');
+        return Excel::download(new ContactExport($request), $date . '' . 'خروجی تماس با ما به مدیریت در تاریخ.xlsx');
+    }
+
+    public function export2(Request $request)
+    {
+        $date = Jalalian::now()->format('Y-m-d');
+        return Excel::download(new Contact2Export($request), $date . '' . 'خروجی تماس با ما به مدیریت در تاریخ.xlsx');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +32,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::with('FieldSchool')->with('payeSchool')->paginate(20);
+        $contacts = Contact::with('FieldSchool')->with('payeSchool')->orderBy('created_at','desc')->paginate(20);
 
         return view('panel.home.contact_us.index', ['contacts' => $contacts]);
     }
@@ -30,69 +46,16 @@ class ContactController extends Controller
         return response()->json(['success' => 'Status change successfully.']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function update(Request $request,$id)
     {
-
+        $row=Contact::find($id);
+        $row->update([
+            'description'=>$request->description,
+            'status'=>$request->status,
+            'last_call_date'=>$request->input('date-picker-shamsi'),
+        ]);
+        alert('عملیات موفق', 'عملیات با موفقیت انجام شد');
+        return back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

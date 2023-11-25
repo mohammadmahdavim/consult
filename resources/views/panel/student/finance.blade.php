@@ -44,8 +44,8 @@
                                             مالی:</b> {{number_format($student->user->transaction->total)}}</div>
                                     <div class="p-2"><b>کل
                                             پرداختی:</b>{{number_format($student->user->transaction->paid)}}</div>
-{{--                                    <div class="p-2">--}}
-{{--                                        <b>مانده:</b> {{number_format($student->user->transaction->remaining)}}</div>--}}
+                                    {{--                                    <div class="p-2">--}}
+                                    {{--                                        <b>مانده:</b> {{number_format($student->user->transaction->remaining)}}</div>--}}
                                 </div>
                             @endif
                         </div>
@@ -67,7 +67,7 @@
                                         <th></th>
                                         <th></th>
                                         <th></th>
-                                        <th colspan="10" scope="colgroup">مالی</th>
+                                        <th colspan="12" scope="colgroup">مالی</th>
 
                                     </tr>
                                     <tr style="text-align: center">
@@ -78,6 +78,8 @@
                                         <th colspan="2" scope="colgroup">مشاور</th>
                                         <th colspan="2" scope="colgroup">مدیر</th>
                                         <th colspan="2" scope="colgroup">جذب</th>
+                                        <th colspan="2" scope="colgroup">سرمشاور</th>
+                                        <th colspan="2" scope="colgroup">جریمه</th>
 
 
                                     </tr>
@@ -93,7 +95,10 @@
                                         <th>تاریخ</th>
                                         <th>مبلغ</th>
                                         <th>تاریخ</th>
-
+                                        <th>مبلغ</th>
+                                        <th>تاریخ</th>
+                                        <th>مبلغ</th>
+                                        <th>تاریخ</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -102,7 +107,8 @@
                                     $consult = 0;
                                     $caller = 0;
                                     $manager = 0;
-                                    $site = 0;
+                                    $superConsult = 0;
+                                    $penalty = 0;
                                     ?>
                                     @foreach($services as $key=>$service)
                                         <tr style="text-align: center">
@@ -110,7 +116,7 @@
                                             <td>
                                                 <a href="/panel/consult/finance/{{$service->consult->id}}">
 
-                                                {{$service->consult->user->name}} {{$service->consult->user->family}}
+                                                    {{$service->consult->user->name}} {{$service->consult->user->family}}
                                                 </a>
                                             </td>
                                             <td>{{$service->service->title}}</td>
@@ -121,16 +127,22 @@
                                             <td>{{number_format($service->finance->where('type_id',4)->pluck('amount')->first())}}</td>
                                             <td>{{$service->finance->where('type_id',4)->pluck('date')->first()}}</td>
                                             @if($key==0)
-                                            <td style="text-align: center" rowspan="{{$services->count()}}">{{number_format($service->finance->where('type_id',3)->pluck('amount')->first())}}</td>
-                                            <td rowspan="{{$services->count()}}">{{$service->finance->where('type_id',3)->pluck('date')->first()}}</td>
+                                                <td style="text-align: center"
+                                                    rowspan="{{$services->count()}}">{{number_format($service->finance->where('type_id',3)->pluck('amount')->first())}}</td>
+                                                <td rowspan="{{$services->count()}}">{{$service->finance->where('type_id',3)->pluck('date')->first()}}</td>
 
                                             @endif
+                                            <td>{{number_format($service->finance->where('type_id',5)->pluck('amount')->first())}}</td>
+                                            <td>{{$service->finance->where('type_id',5)->pluck('date')->first()}}</td>
+                                            <td>{{number_format($service->finance->where('type_id',6)->pluck('amount')->first())}}</td>
+                                            <td>{{$service->finance->where('type_id',6)->pluck('date')->first()}}</td>
                                             <?php
                                             $student = $student + $service->finance->where('type_id', 1)->pluck('amount')->first();
                                             $consult = $consult + $service->finance->where('type_id', 2)->pluck('amount')->first();
                                             $caller = $caller + $service->finance->where('type_id', 3)->pluck('amount')->first();
                                             $manager = $manager + $service->finance->where('type_id', 4)->pluck('amount')->first();
-                                            $site = $site + $service->finance->where('type_id', 5)->pluck('amount')->first();
+                                            $superConsult = $superConsult + $service->finance->where('type_id', 5)->pluck('amount')->first();
+                                            $penalty = $penalty + $service->finance->where('type_id', 6)->pluck('amount')->first();
                                             ?>
                                         </tr>
                                     @endforeach
@@ -141,11 +153,13 @@
                                         <td colspan="2">{{number_format($consult)}}</td>
                                         <td colspan="2">{{number_format($manager)}}</td>
                                         <td colspan="2">{{number_format($caller)}}</td>
+                                        <td colspan="2">{{number_format($superConsult)}}</td>
+                                        <td colspan="2">{{number_format($penalty)}}</td>
 
                                     </tr>
                                     <tr style="text-align: center">
                                         <td colspan="3" scope="colgroup">مانده</td>
-                                        <td colspan="10">{{number_format($student-$consult-$caller-$manager-$site)}}</td>
+                                        <td colspan="12">{{number_format($student-$consult-$caller-$manager-$superConsult-$penalty)}}</td>
                                     </tr>
                                     </tbody>
 

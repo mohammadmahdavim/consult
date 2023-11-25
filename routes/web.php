@@ -36,7 +36,13 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/blog', 'HomeController@blog');
     Route::get('/blog/{id}', 'HomeController@blog_single');
     Route::get('/about_us', 'HomeController@about_us');
+      Route::get('/contact_us_2', 'HomeController@contact_us_2');
+            Route::get('/contact_us_3', 'HomeController@contact_us_3');
+
+          Route::post('/contact_2/store', 'HomeController@contact_us_store_2');
+
     Route::get('/contact_us', 'HomeController@contact_us');
+    Route::get('/contact_us/{id}', 'HomeController@contact_us_with_id');
     Route::post('/contact/store', 'HomeController@contact_store');
     Route::get('/tagSearch/{id}', 'HomeController@tagSearch');
     Route::any('/search', 'HomeController@search');
@@ -44,6 +50,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
 
 Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
+
+
+    Route::get('/comments', 'CommentController@export');
 
     Route::get('/report/{id}', 'ReportController@create');
     Route::post('/reportStore', 'ReportController@store');
@@ -56,6 +65,10 @@ Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
     Route::get('/karnameh/{id}', 'TarazController@karnameh');
     Route::any('/taraz/destroy/{id}', 'TarazController@destroy');
 
+ Route::post('/reminders/{id}', 'ReminderController@index');
+    Route::post('/reminder/store', 'ReminderController@store');
+    Route::any('/reminder/destroy/{id}', 'ReminderController@destroy');
+    Route::any('/reminder/list', 'ReminderController@list');
 
     Route::post('/comments/{id}', 'CommentController@index');
     Route::post('/comment/store', 'CommentController@store');
@@ -98,6 +111,7 @@ Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
     Route::any('/users/userDestroy/{id}', 'UserController@delete');
 
 # End Roles
+    Route::post('/students/forward', 'StudentController@forward')->middleware('can:student-delete');
 
     Route::get('/index', 'PanelController@index');
     Route::post('/state_city', 'PanelController@state_city');
@@ -143,13 +157,18 @@ Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
         Route::get('/consult_debt', 'ConsultController@debt')->middleware('can:consult-list');
         Route::get('/consult_debt_export', 'ConsultController@consultDebt')->middleware('can:consult-list');
 
-
+ Route::get('/super_consult_debt', 'ConsultController@superdebt')->middleware('can:consult-list');
+        Route::get('/super_consult_debt_export', 'ConsultController@superconsultDebt')->middleware('can:consult-list');
         Route::resource('/service', 'ServiceController')->middleware('can:service');
         Route::post('/service/changeStatus', 'ServiceController@changeStatus')->middleware('can:service');
         Route::any('/deleteService/{id}', 'ServiceController@delete')->middleware('can:service');
         Route::resource('/blog', 'BlogController')->middleware('can:blog');
         Route::any('/blog/deleteBlog/{id}', 'BlogController@delete')->middleware('can:blog');
         Route::resource('/about_us', 'AboutController')->middleware('can:about');
+        Route::get('/contact_us/export', 'ContactController@export')->middleware('can:slider');
+           Route::get('/contact_us_2/export', 'ContactController@export2')->middleware('can:slider');
+        Route::post('/contact/update/{id}', 'ContactController@update')->middleware('can:slider');
+
         Route::resource('/contact_us', 'ContactController')->middleware('can:slider');
         Route::any('/contact_us/changeStatus/{id}/{read}', 'ContactController@changeStatus')->middleware('can:contact');
         Route::resource('/tag', 'TagController')->middleware('can:blog');
@@ -157,7 +176,7 @@ Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
     });
 
     Route::group(['prefix' => 'students'], function () {
-        Route::get('/consult/show', 'Home\ConsultController@show')->middleware('can:consult-list');
+        Route::get('/consult/show', 'Home\ConsultController@show')->middleware('can:consult-show-student');
         Route::resource('/pattern', 'Student\PatternController');
         Route::get('/pattern/doros/{id}', 'Student\PatternController@doros');
         Route::get('/pattern/date/{id}', 'Student\PatternController@date');

@@ -45,6 +45,8 @@
 
 
                                 <th>#</th>
+                                <th>مدیر</th>
+                                <th>سرمشاور</th>
                                 <th>مشاور</th>
                                 <th>دانش‌آموز</th>
                                 <th>دوره</th>
@@ -62,6 +64,14 @@
                                         {{$key+1}}
                                     </td>
                                     <td>
+                                        {{$row->service->student->manager->name}}  {{$row->service->student->manager->family}}
+
+                                    </td>
+                                    <td>
+                                        {{$row->service->student->super_consult->name}}  {{$row->service->student->super_consult->family}}
+
+                                    </td>
+                                    <td>
                                         <a href="/panel/consult/finance/{{$row->service->consult->id}}">
                                             {{$row->service->consult->user->name}}  {{$row->service->consult->user->family}}
 
@@ -76,7 +86,7 @@
                                     <td>
                                         <a href="/panel/student/service/{{$row->service->student->id}}">
 
-                                        {{$row->service->service->title}} ( {{$row->service->service->price}})
+                                            {{$row->service->service->title}} ( {{$row->service->service->price}})
                                         </a>
                                     </td>
                                     <td>

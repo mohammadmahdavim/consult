@@ -46,6 +46,7 @@
 
                                 <th>#</th>
                                 <th>دانش ‌آموز</th>
+                                    <th>مدیر</th>
                                 <th>دوره</th>
                                 <th>شروع دوره</th>
 
@@ -66,6 +67,14 @@
 
                                         {{$row->service->student->user->name}}  {{$row->service->student->user->family}}
                                         </a>
+                                    </td>
+                                      <td>
+                                    
+
+                                        {{$row->service->student->manager->name}} 
+                                        
+                                        {{$row->service->student->manager->family}} 
+                                      
                                     </td>
                                     <td>
                                         <a href="/panel/student/service/{{$row->service->student->id}}">

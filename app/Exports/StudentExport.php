@@ -63,12 +63,16 @@ class StudentExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'نام',
+            'مدیر',
+            ' سر مشاور',
             'مشاور',
+            'دوره',
             'کد ملی',
             'شهر',
             'رشته',
             'پایه',
             'تاریخ ثبت نام',
+            'تاریخ پایان دوره',
         ];
     }
 
@@ -77,12 +81,17 @@ class StudentExport implements FromCollection, WithHeadings, WithMapping
 
         return [
             $preflight->user->name . ' ' . $preflight->user->family,
+            $preflight->manager->name . ' ' . $preflight->manager->family,
+            $preflight->super_consult->name . ' ' . $preflight->super_consult->family,
             $preflight->serviceActive->consult->user->name . ' ' . $preflight->serviceActive->consult->user->family,
+            $preflight->serviceActive->service->title,
             $preflight->user->national_code,
             $preflight->state->title,
             $preflight->field->title,
             $preflight->paye->title,
             $preflight->serviceLast->start,
+            $preflight->serviceActive->end,
+
         ];
 
     }

@@ -24,6 +24,7 @@ class ManagerFinanceExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'دانش ‌آموز',
+                   'مدیر',
             'دوره',
             'مبلغ',
             'شروع دوره',
@@ -33,8 +34,9 @@ class ManagerFinanceExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             ($preflight->service->student->user ? $preflight->service->student->user->name . ' ' . $preflight->service->student->user->family : ''),
+            $preflight->service->student->manager->name. ' '. $preflight->service->student->manager->family,
             $preflight->service->service->title,
-            $preflight->service->service->price,
+                $preflight->service->service->price,
             $preflight->service->start,
         ];
     }

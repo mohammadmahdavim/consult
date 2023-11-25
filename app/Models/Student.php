@@ -23,6 +23,18 @@ class Student extends Model
         return $this->belongsTo(User::class,'caller')->withDefault();
     }
 
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class,'manager_id')->withDefault();
+    }
+
+
+    public function super_consult()
+    {
+        return $this->belongsTo(User::class,'super_consult_id')->withDefault();
+    }
+
     public function consult()
     {
         return $this->belongsTo(consult::class)->withDefault();

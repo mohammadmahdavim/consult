@@ -13,6 +13,9 @@ use App\Services\ImageService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class ProfileController extends Controller
 {
@@ -30,8 +33,34 @@ class ProfileController extends Controller
     public function index()
     {
 
+
+    //   $a=Storage::url('video14.mp4');
+
+    //   $filePath = storage_path("j.mp4");
+    //     return Response::download($filePath);
+    //     return 'https://test.kanoonbartarha.ir/storage/j.mp4';
+    //   $response = Http::withHeaders([
+    //                 'Authorization' => 'Apikey 3ab20a2b-3bae-557d-be5b-3e218c017238',
+    //                 'Content-Type' => 'application/json',
+    //             ])
+    //                 ->post('https://napi.arvancloud.com/vod/2.0/channels/66d896de-1268-4a5c-b187-6f9fbf1de028/videos', [
+    //                     "title" => "test",
+    //                     "description" => "test",
+    //                     "video_url" => Response::download($filePath),
+    //                     "convert_mode" => "profile",
+    //                     "profile_id" => "63166527-0f9b-4a51-b4a7-dfdb703ca6f6",
+    //                     "parallel_convert" => false,
+    //                     "thumbnail_time" => 0,
+    //                     "watermark_id" => "d5e89ee1-b16b-4ea8-a0e5-b2d982ccbff7",
+    //                     "watermark_area" => "CENTER",
+    //                 ]);
+
+
         $userId = auth()->user()->id;
         $user = consult::where('user_id', $userId)->with('user')->first();
+        
+        // return auth()->user()->getAllPermissions();
+
         $fields = field::all();
         $years = year::all();
         $states = state::where('parent', 0)->get();
