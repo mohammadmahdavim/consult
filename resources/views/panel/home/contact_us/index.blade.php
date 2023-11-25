@@ -23,6 +23,37 @@
             <!-- end::page header -->
             <div class="card">
                 <div class="card-body">
+                    <button type='button' class="btn btn-primary" onclick="hideshow()"
+                            id='hideshow'>
+                        جستجوی پیشرفته
+                    </button>
+                    <div id='search' style="display: none">
+                        <form method="get" action="/panel/home/contact_us">
+                            <div class="d-flex flex-row">
+                                <div class="p-2">
+                                    <span>نام</span>
+                                    <input class="form-control" id="name" name="name"
+                                           value="{{request()->name}}"
+                                           placeholder="نام">
+                                </div>
+                                <div class="p-2">
+                                    <span> انتخاب پایه</span>
+                                    <select class="form-control" dir="rtl"
+                                            name="paye">
+                                        <option></option>
+                                        @foreach($payes as $paye)
+                                            <option value="{{$paye->id}}"
+                                                    @if(request()->paye==$paye->id) selected @endif>{{$paye->title}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="p-2">
+                                    <br>
+                                    <button type="submit" class="btn btn-info">جستجوکن</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <a href="/panel/home/contact_us/export">
                         <button class="btn btn-danger">خروجی اکسل</button>
                     </a>
@@ -38,9 +69,9 @@
                                 <th>کد ملی</th>
                                 <th>رشته</th>
                                 <th>پایه</th>
-                                        <th>
-                                        تاریخ ثبت دانش آموز
-                                        </th>
+                                <th>
+                                    تاریخ ثبت دانش آموز
+                                </th>
                                 <th>کامنت</th>
 
                             </tr>
@@ -48,19 +79,19 @@
                             <tbody>
                             @foreach($contacts as $row)
                                 <tr @if($row->status=='ثبت نام شد' and $row->last_call_date) style="text-align: center;background-color:green"
-                                @elseif($row->status=='ثبت نام نمیکنه' and $row->last_call_date) style="text-align: center;background-color: red"
-                                  @elseif($row->status=='نیاز به پیگیری مجدد' and $row->last_call_date) style="text-align: center;background-color:yellow"
-                                  @elseif($row->status=='تکراری' and $row->last_call_date) style="text-align: center;background-color:grey"
+                                    @elseif($row->status=='ثبت نام نمیکنه' and $row->last_call_date) style="text-align: center;background-color: red"
+                                    @elseif($row->status=='نیاز به پیگیری مجدد' and $row->last_call_date) style="text-align: center;background-color:yellow"
+                                    @elseif($row->status=='تکراری' and $row->last_call_date) style="text-align: center;background-color:grey"
                                     @else style="text-align: center"
                                     @endif
-                                    >
+                                >
                                     <td>{{$row->name}}</td>
                                     <td>{{$row->mobile}}</td>
                                     <td>{{$row->national_code}}</td>
                                     <td>{{$row->FieldSchool->title}}</td>
                                     <td>{{$row->payeSchool->title}}</td>
                                     <td>
-                                                            {{\Morilog\Jalali\Jalalian::forge($row->created_at)}}
+                                        {{\Morilog\Jalali\Jalalian::forge($row->created_at)}}
 
                                     </td>
                                     <td>
@@ -86,21 +117,34 @@
                                                         <form action="/panel/home/contact/update/{{$row->id}}"
                                                               method="post">
                                                             @csrf
-w
                                                             <div class="row">
 
                                                                 <div class="col-md-3">
                                                                     <label>تاریخ آخرین تماس</label>
-                                                                    <input name="date-picker-shamsi" class="form-control"  value="{{$row->last_call_date}}">
+                                                                    <input name="date-picker-shamsi"
+                                                                           class="form-control"
+                                                                           value="{{$row->last_call_date}}">
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <label>وضعیت</label>
                                                                     <select name="status" class="form-control">
                                                                         <option></option>
-                                                                        <option @if($row->status=='ثبت نام شد') selected @endif>ثبت نام شد</option>
-                                                                        <option @if($row->status=='ثبت نام نمیکنه') selected @endif>ثبت نام نمیکنه</option>
-                                                                        <option @if($row->status=='نیاز به پیگیری مجدد') selected @endif>نیاز به پیگیری مجدد</option>
-                                                                        <option @if($row->status=='تکراری') selected @endif>تکراری</option>
+                                                                        <option
+                                                                            @if($row->status=='ثبت نام شد') selected @endif>
+                                                                            ثبت نام شد
+                                                                        </option>
+                                                                        <option
+                                                                            @if($row->status=='ثبت نام نمیکنه') selected @endif>
+                                                                            ثبت نام نمیکنه
+                                                                        </option>
+                                                                        <option
+                                                                            @if($row->status=='نیاز به پیگیری مجدد') selected @endif>
+                                                                            نیاز به پیگیری مجدد
+                                                                        </option>
+                                                                        <option
+                                                                            @if($row->status=='تکراری') selected @endif>
+                                                                            تکراری
+                                                                        </option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -114,7 +158,7 @@ w
                                                                 </div>
 
                                                             </div>
-<br>
+                                                            <br>
                                                             <button class="btn btn-block btn-success">submit</button>
                                                         </form>
                                                     </div>
@@ -210,6 +254,17 @@ w
     <script src="/panel/assets/vendors/datepicker/daterangepicker.js"></script>
     <script src="/panel/assets/js/examples/datepicker.js"></script>
     <!-- end::datepicker -->
+    <script>
+        function hideshow() {
+            var x = document.getElementById("search");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+    </script>
 @endsection
 
 
