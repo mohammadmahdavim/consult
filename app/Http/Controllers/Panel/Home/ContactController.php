@@ -39,6 +39,9 @@ class ContactController extends Controller
             ->when($request->get('paye'), function ($query) use ($request) {
                 $query->where('paye', $request->paye);
             })
+            ->when($request->get('status'), function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->when($request->get('name'), function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->name . '%');
             })

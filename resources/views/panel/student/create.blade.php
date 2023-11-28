@@ -112,7 +112,7 @@
 
                                     <div class="col-md-3 mb-3">
                                         <label for="consult_id">جذب کننده</label>
-                                        <select class="form-control" name="caller">
+                                        <select class="js-example-basic-single" name="caller">
                                             @foreach($callers as $caller)
                                                 <option
                                                     value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label for="consult_id">مدیر</label>
-                                        <select class="form-control" name="manager_id">
+                                        <select class="js-example-basic-single" name="manager_id">
                                             @foreach($callers as $caller)
                                                 <option
                                                     value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>
@@ -134,7 +134,7 @@
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label for="consult_id">سر مشاور</label>
-                                        <select class="form-control" name="super_consult_id">
+                                        <select class="js-example-basic-single" name="super_consult_id">
                                             @foreach($callers as $caller)
                                                 <option
                                                     value="{{$caller->id}}">{{$caller->name}} {{$caller->family}}</option>

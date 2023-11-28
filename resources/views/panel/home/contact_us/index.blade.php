@@ -48,6 +48,29 @@
                                     </select>
                                 </div>
                                 <div class="p-2">
+                                    <span> انتخاب وضعیت</span>
+                                    <select class="form-control" dir="rtl"
+                                            name="status">
+                                        <option></option>
+                                        <option
+                                            @if(request()->status=='ثبت نام شد') selected @endif>
+                                            ثبت نام شد
+                                        </option>
+                                        <option
+                                            @if(request()->status=='ثبت نام نمیکنه') selected @endif>
+                                            ثبت نام نمیکنه
+                                        </option>
+                                        <option
+                                            @if(request()->status=='نیاز به پیگیری مجدد') selected @endif>
+                                            نیاز به پیگیری مجدد
+                                        </option>
+                                        <option
+                                            @if(request()->status=='تکراری') selected @endif>
+                                            تکراری
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="p-2">
                                     <br>
                                     <button type="submit" class="btn btn-info">جستجوکن</button>
                                 </div>
