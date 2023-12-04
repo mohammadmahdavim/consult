@@ -207,7 +207,7 @@
             </div>
 
         </div>
-        {{$contacts->links()}}
+        {{$contacts->withQueryString()->links()}}
     </main>
 @endsection
 @section('js')
