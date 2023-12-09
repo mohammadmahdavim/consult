@@ -2,6 +2,8 @@
 
 namespace App\Exports;
 
+use App\Models\consult;
+use App\Models\ServiceStudent;
 use App\Models\Student;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -24,7 +26,7 @@ class StudentExport implements FromCollection, WithHeadings, WithMapping
     {
         $request = $this->request;
 
-        return Student::with('user.images')
+        $studentsList= Student::with('user.images')
             ->with('state')
             ->with('city')
             ->with('field')
@@ -57,6 +59,18 @@ class StudentExport implements FromCollection, WithHeadings, WithMapping
                 $query->where('status', $request->status);
             })
             ->get();
+
+        $user = auth()->user();
+        if ($user->role == 'consult') {
+            $consult = consult::where('user_id', $user->id)->pluck('id')->first();
+            $students = ServiceStudent::where('consult_id', $consult)->pluck('student_id');
+            $rows = $studentsList->whereIn('id', $students);
+        }  elseif ($user->role == 'super_consult') {
+            $rows = $studentsList->where('super_consult_id', $user->id);
+        } else {
+            $rows = $studentsList;
+        }
+        return $rows;
     }
 
     public function headings(): array
