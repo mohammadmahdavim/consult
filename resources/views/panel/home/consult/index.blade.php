@@ -126,7 +126,7 @@
                                                         <ol>
                                                             @foreach($row->serviceActive as $service)
                                                                 <li>
-                                                                    <a href="/panel/student/single/{{$service->student->id}}">
+                                                                    <a target="_blank" href="/panel/student/service/{{$service->student->id}}">
                                                                         {{$service->student->user->name}} {{$service->student->user->family}}
                                                                     </a>
                                                                      <button type="button" class="btn btn-warning btn-sm" title="پرونده"
