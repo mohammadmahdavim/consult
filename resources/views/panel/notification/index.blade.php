@@ -93,8 +93,8 @@
                                                                     @if($type->id==request()->type_id) selected @endif>{{$type->name}}</option>
                                                         @endforeach
                                                     </select>
-                                                     </div>
-                                                    <div class="p-2">
+                                                </div>
+                                                <div class="p-2">
                                                     <span>مدیر</span>
                                                     <select class="form-control" dir="rtl"
                                                             name="manager">
@@ -102,8 +102,8 @@
                                                         @foreach($managers as $manager)
                                                             <option value="{{$manager->id}}"
                                                                     @if($manager->id==request()->manager) selected @endif>{{$manager->name}}
-                                                                    {{$manager->family}}
-                                                                    </option>
+                                                                {{$manager->family}}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -127,9 +127,9 @@
                             <thead>
                             <tr style="text-align: center">
                                 <th>#</th>
-                          
-                                  <th>مدیر</th>
-                                   <th>دانش آموز</th>
+
+                                <th>مدیر</th>
+                                <th>دانش آموز</th>
                                 <th>اعلان</th>
                                 <th>عملیات</th>
 
@@ -139,29 +139,33 @@
                             @foreach($rows as $key=>$row)
                                 <tr style="text-align: center">
                                     <td>{{$key+1}}</td>
-  <td>
-      @if($row->user->student->manager)                               
+                                    <td>
+                                        @if($row->user->student->manager)
                                             {{$row->user->student->manager->name}}
-                                             {{$row->user->student->manager->family}}
-                                        
-                                            @endif
-                                       
+                                            {{$row->user->student->manager->family}}
+
+                                        @endif
+
                                     </td>
                                     <td>
                                         <a href="/panel/student/service/{{$row->user->student->id}}">
                                             {{$row->user->name}} {{$row->user->family}}
                                         </a>
                                     </td>
-                                    <td>{{$row->type->name}}</td>
+                                    <td>
+                                        <a href="/panel/student/{{$row->user->student->id}}/edit">
+                                            {{$row->type->name}}
+                                        </a>
+                                    </td>
                                     <td style="text-align: center">
                                         <input style="text-align: center" type="checkbox" class="form-check-input"
-                                            id="materialUnchecked"
-                                         {{ $row->active ? 'checked' : '' }} onclick="changeStatus('{{$row->id}}',this) ">
+                                               id="materialUnchecked"
+                                               {{ $row->active ? 'checked' : '' }} onclick="changeStatus('{{$row->id}}',this) ">
                                         @can('service-show-student')
                                             <button type="button" class="btn btn-warning btn-sm" title="پرونده"
                                                     onclick="modal_show('{{$row->user->student->id}}','/panel/comments');">
                                                 <i class="fa fa-file-text-o"></i>
-                                                </button>
+                                            </button>
                                         @endcan
                                     </td>
                                 </tr>
@@ -169,7 +173,7 @@
                             </tbody>
 
                         </table>
-                        {{ $rows->links() }}
+                        {{ $rows->withQueryString()->links() }}
                     </div>
 
                 </div>

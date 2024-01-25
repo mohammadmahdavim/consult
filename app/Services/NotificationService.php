@@ -26,6 +26,7 @@ class NotificationService
 
     public function create($user, $type)
     {
+
         Notif::create([
             'user_id' => $user,
             'notif_types_id' => $type,
