@@ -1,83 +1,154 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: mamad
+ * Date: 05/06/2020
+ * Time: 05:32 PM
+ */
 
-namespace App\Models;
+namespace App\Services;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Student extends Model
+use App\Models\ServiceStudent;
+use App\Models\Student;
+use App\Models\transaction;
+use App\Models\User;
+use Morilog\Jalali\Jalalian;
+
+
+class StudentService
 {
-    use HasFactory;
-    use SoftDeletes;
 
-    protected $guarded = [];
+    public $notificationService;
 
-    public function user()
+    public function __construct(NotificationService $notificationService)
     {
-        return $this->belongsTo(User::class)->withDefault();
+        $this->notificationService = $notificationService;
+
     }
 
-    public function callerStudent()
+    public function getStudent($request)
     {
-        return $this->belongsTo(User::class,'caller')->withDefault();
+        $students = Student::with('user.images')
+            ->with('state')
+            ->with('manager')
+            ->with('serviceActive')
+            ->with('city')
+            ->with('field')
+            ->with('paye')
+            ->with('service')
+            ->with('serviceActive.consult.user')
+            ->with('consult.user')
+            ->whereHas('user', function ($q) use ($request) {
+                if ($request->get('name')) {
+                    $q->where('name', 'like', '%' . $request->name . '%')
+                        ->orwhere('family', 'like', '%' . $request->name . '%');
+                }
+                if ($request->get('national_code')) {
+                    $q->where('national_code', 'like', '%' . $request->national_code . '%');
+                }
+
+            })
+            // ->when('serviceActive', function ($q) use ($request) {
+            //     if ($request->get('counsult')) {
+            //         $q->whereHas('serviceActive', function ($q) use ($request) {
+            //             $q->whereIn('consult_id', $request->counsult);
+            //         });
+            //     }
+            // })
+
+            ->when($request->get('counsult'), function ($q) use ($request) {
+                $q->whereHas('serviceLast', function ($q) use ($request) {
+                    $q->whereIn('consult_id', $request->counsult);
+                });
+            })
+            ->when($request->get('service'), function ($query) use ($request) {
+                $query->whereHas('service', function ($q) use ($request) {
+                    if ($request->get('service')) {
+                        $q->where('service_id', $request->service);
+                    }
+                });
+            })
+
+            ->when($request->get('field'), function ($query) use ($request) {
+                $query->whereIn('field_id', $request->field);
+            })
+            ->when($request->get('manager_id'), function ($query) use ($request) {
+                $query->where('manager_id', $request->manager_id);
+            })
+            ->when($request->get('paye'), function ($query) use ($request) {
+                $query->whereIn('paye_id', $request->paye);
+            })
+            ->when($request->get('super_consult_id'), function ($query) use ($request) {
+                $query->whereIn('super_consult_id', $request->super_consult_id);
+            })
+            ->when($request->get('status'), function ($query) use ($request) {
+                if ($request->status == 'active') {
+                    $query->whereIn('status', [$request->status, 'mid-term', '72', '24']);
+                } else {
+                    $query->where('status', [$request->status]);
+
+                }
+            })
+            ->orderByDesc('created_at');
+        return $students;
     }
 
-
-    public function manager()
+    public function setStatus($id)
     {
-        return $this->belongsTo(User::class,'manager_id')->withDefault();
+
+        $student = Student::where('id', $id)->select('id', 'user_id', 'status')->first();
+        $nowStatus = $student->status;
+        $status = $this->checkFinance($student->user_id);
+
+        if ($status == 'active') {
+            $status = $this->checkService($id);
+        }
+
+        $student->update(['status' => $status]);
+        if ($nowStatus != $status) {
+            $this->notificationService->notification($student->user_id, $status);
+        }
     }
 
-
-    public function super_consult()
+    public function checkFinance($user)
     {
-        return $this->belongsTo(User::class,'super_consult_id')->withDefault();
+        $remaining = transaction::where('user_id', $user)->pluck('remaining')->first();
+        $user = User::find($user);
+        if ($remaining > 0) {
+            $user->update(['active' => 0]);
+            return 'inactive';
+        }
+        $user->update(['active' => 1]);
+
+        return 'active';
+
     }
 
-    public function consult()
+    public function checkService($id)
     {
-        return $this->belongsTo(consult::class)->withDefault();
+        $services = ServiceStudent::where('student_id', $id)->active()->orderBy('end', 'Desc')->pluck('end')->first();
+        if (!$services) {
+            return 'inactive';
+        }
+        $services = explode('/', $services);
+        $now = Jalalian::now()->getTimestamp();
+        $services = (new Jalalian($services[0], $services[1], $services[2]))->getTimestamp();
+        $expire = ($services - $now) / 86400;
+
+        if ($expire > 3 and $expire < 15 and ServiceStudent::where('student_id', $id)->count() == 1) {
+            $status = 'mid-term';
+        } elseif (1 < $expire and $expire < 3) {
+            $status = '72';
+        } elseif ($expire > 0 and $expire < 1) {
+            $status = '24';
+        } elseif ($expire > 3) {
+            $status = 'active';
+        } else {
+            $status = 'inactive';
+        }
+        return $status;
     }
 
-
-    public function field()
-    {
-        return $this->belongsTo(FieldSchool::class)->withDefault();
-    }
-
-    public function paye()
-    {
-        return $this->belongsTo(Paye::class)->withDefault();
-    }
-
-    public function state()
-    {
-        return $this->belongsTo(state::class)->withDefault();
-    }
-
-    public function city()
-    {
-        return $this->belongsTo(state::class)->withDefault();
-    }
-
-    public function service()
-    {
-        return $this->hasMany(ServiceStudent::class,'student_id')->orderBy('created_at','desc');
-    }
-
-    public function serviceActive()
-    {
-        return $this->hasOne(ServiceStudent::class,'student_id')->where('active',1)->withDefault();
-    }
-
-    public function serviceLast()
-    {
-        return $this->hasOne(ServiceStudent::class,'student_id')->orderBy('created_at','desc')->withDefault();
-    }
-
-    public function serviceFirst()
-    {
-        return $this->hasOne(ServiceStudent::class,'student_id')->orderBy('created_at','asc')->withDefault();
-    }
 }
+

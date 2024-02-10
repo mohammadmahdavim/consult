@@ -56,6 +56,13 @@ class StudentService
                     });
                 }
             })
+            ->when($request->get('counsult'), function ($q) use ($request) {
+//                if ($request->get('counsult')) {
+//                $q->whereHas('serviceActive', function ($q) use ($request) {
+                    $q->whereIn('consult_id', $request->counsult);
+//                });
+//                }
+            })
             ->when($request->get('service'), function ($query) use ($request) {
                 $query->whereHas('service', function ($q) use ($request) {
                     if ($request->get('service')) {
@@ -63,7 +70,6 @@ class StudentService
                     }
                 });
             })
-
             ->when($request->get('field'), function ($query) use ($request) {
                 $query->whereIn('field_id', $request->field);
             })
