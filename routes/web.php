@@ -52,6 +52,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function () {
 
 
+    Route::resource('/satisfaction', 'SatisfactionController');
+    Route::any('/deleteSatisfaction/{id}', 'SatisfactionController@delete');
+
     Route::get('/comments', 'CommentController@export');
 
     Route::get('/report/{id}', 'ReportController@create');

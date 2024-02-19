@@ -42,7 +42,9 @@
                             <li><a href="/panel/home/contact_us">تماس با ما
                               <x-ContactUs :/>
                             </a></li>
+                                <li><a href="/panel/satisfaction">         رضایت ها
 
+                                    </a></li>
                         @endcan
                     </ul>
                 </li>

@@ -10,6 +10,7 @@ use App\Models\consult;
 use App\Models\Contact;
 use App\Models\FieldSchool;
 use App\Models\Paye;
+use App\Models\Satisfaction;
 use App\Models\service;
 use App\Models\slider;
 use App\Models\tag;
@@ -29,6 +30,14 @@ class HomeController extends Controller
         $services = service::with('images')->where('active', 1)->get();
         $consults = consult::take(6)->get();
         $blogs = blog::take(6)->get();
+        $countSatisfaction = Satisfaction::all()->count();
+        if ($countSatisfaction < 4) {
+            $randCount = $countSatisfaction;
+
+        } else {
+            $randCount = 4;
+        }
+        $satisfactions = Satisfaction::all()->random($randCount);
         $fields = FieldSchool::all();
         $payes = Paye::all();
         //        return $services[0]->images[0];
@@ -39,6 +48,7 @@ class HomeController extends Controller
             'blogs' => $blogs,
             'fields' => $fields,
             'payes' => $payes,
+            'satisfactions' => $satisfactions,
         ]);
     }
 

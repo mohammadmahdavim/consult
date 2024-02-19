@@ -87,8 +87,8 @@
                             </div>
                         </div>
                 </div>
-        @endforeach
-        <!--// Heroslider Item -->
+            @endforeach
+            <!--// Heroslider Item -->
 
         </div>
         <div class="heroslider-slidecounter"></div>
@@ -206,8 +206,8 @@
                                 </div>
                             </div>
                         </div>
-                @endforeach
-                <!--// Single Service -->
+                    @endforeach
+                    <!--// Single Service -->
 
 
                 </div>
@@ -224,7 +224,7 @@
                         <div class="col-lg-10">
                             <div class="tm-callback">
                                 <h2>ارتباط با ما</h2>
-                             <p>
+                                <p>
                                     شما می توانید جهت پیش ثبت نام در طرح پشتیبان ویژه اطلاعتتان را اینجا وارد کنید تا در اسرع وقت با شما تماس
                                     گرفته شود.
                                 </p>
@@ -272,9 +272,12 @@
                                     </i></div>
                             </div><br>
                             <div class="d-flex flex-row">
-                                <div class="p-2">شماره واتساپ: 09210915874</div>
                                 <div class="p-2">
-                                    <i class="fa fa-whatsapp fa-3x"></i>
+                                    آیدی تلگرام:
+                                    bartarhakanoon@
+                                </div>
+                                <div class="p-2">
+                                    <i class="fa fa-telegram fa-3x"></i>
                                 </div>
                             </div>
                         </div>
@@ -406,13 +409,12 @@
         <!-- Our Portfolios -->
         <!--// Our Portfolios -->
 
-        <!-- Testimonial Area -->
-        <div class="tm-section testimonial-area tm-padding-section tm-parallax" data-overlay="9"
-             data-bgimage="/home/assets/images/bg/bg-image-2.jpg">
+
+        <div class="tm-section blogs-area bg-white tm-padding-section">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-6 col-lg-7 col-md-10 col-12">
-                        <div class="tm-section-title tm-section-title-white text-center">
+                        <div class="tm-section-title text-center">
                             <h2>آنچه دانش آموزان می گویند</h2>
                             <span class="divider"><i class="fa fa-superpowers"></i></span>
                             <p>
@@ -421,76 +423,24 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="row testimonial-slider-active">-->
-
-                    <!-- Testimonial -->
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="tm-testimonial">-->
-                <!--            <div class="tm-testimonial-content">-->
-                <!--                <i class="fa fa-quote-left"></i>-->
-                <!--                <p>-->
-                <!--                </p>-->
-                <!--            </div>-->
-                <!--            <div class="tm-testimonial-bottom">-->
-                <!--                <div class="tm-testimonial-authorimage">-->
-                <!--                    <img src="/home/assets/images/authors/author-image-4.jpg" alt="author image">-->
-                <!--                </div>-->
-                <!--                <div class="tm-testimonial-authorcontent">-->
-                <!--                    <h5>سیسیلیا ماس</h5>-->
-                <!--                    <p>رهبر تیم</p>-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                    <!--// Testimonial -->
-
-                    <!-- Testimonial -->
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="tm-testimonial">-->
-                <!--            <div class="tm-testimonial-content">-->
-                <!--                <i class="fa fa-quote-left"></i>-->
-                <!--                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان-->
-                <!--                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و</p>-->
-                <!--            </div>-->
-                <!--            <div class="tm-testimonial-bottom">-->
-                <!--                <div class="tm-testimonial-authorimage">-->
-                <!--                    <img src="/home/assets/images/authors/author-image-3.jpg" alt="author image">-->
-                <!--                </div>-->
-                <!--                <div class="tm-testimonial-authorcontent">-->
-                <!--                    <h5>سیسیلیا ماس</h5>-->
-                <!--                    <p>رهبر تیم</p>-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                    <!--// Testimonial -->
-
-                    <!-- Testimonial -->
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="tm-testimonial">-->
-                <!--            <div class="tm-testimonial-content">-->
-                <!--                <i class="fa fa-quote-left"></i>-->
-                <!--                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان-->
-                <!--                    گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و-->
-                <!--                    برای شرایط فعل</p>-->
-                <!--            </div>-->
-                <!--            <div class="tm-testimonial-bottom">-->
-                <!--                <div class="tm-testimonial-authorimage">-->
-                <!--                    <img src="/home/assets/images/authors/author-image-2.jpg" alt="author image">-->
-                <!--                </div>-->
-                <!--                <div class="tm-testimonial-authorcontent">-->
-                <!--                    <h5>سیسیلیا ماس</h5>-->
-                <!--                    <p>رهبر تیم</p>-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                    <!--// Testimonial -->
-
-                <!--</div>-->
+                <div class="blog-slider-active tm-slider-arrow tm-slider-arrow-hovervisible">
+                    <!-- Single Blog -->
+                    @foreach($satisfactions as $satisfaction)
+                        <div class="blog-slider-item">
+                            <div class="tm-blog wow fadeInUp">
+                                <div class="tm-blog-imageslider tm-slider-arrow tm-slider-dots">
+                                    @foreach($satisfaction->images as $image)
+                                        <img src="{{asset('service_photos')}}/{{$image->file }}" id="previewImg"
+                                             alt="Partner Image">
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    <!--// Single Blog -->
+                </div>
             </div>
         </div>
-        <!--// Testimonial Area -->
 
         <!-- Blogs Area -->
         <div class="tm-section blogs-area bg-white tm-padding-section">
@@ -531,8 +481,8 @@
                                 </div>
                             </div>
                         </div>
-                @endforeach
-                <!--// Single Blog -->
+                    @endforeach
+                    <!--// Single Blog -->
                 </div>
             </div>
         </div>
